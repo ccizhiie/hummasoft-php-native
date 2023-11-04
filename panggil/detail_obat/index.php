@@ -54,11 +54,11 @@
                                     <td class="py-2 px-4 text-center">
                                         <a href="<?= $link . 'edit&id_detail=' . $tampil->id_detail ?>" class="bg-blue-500 text-white py-1 px-2 rounded-md">
                                             <!-- Tombol Edit -->
-                                            <span class="glyphicon glyphicon-edit"></span>
+                                            <span class="glyphicon glyphicon-edit">edit</span>
                                         </a>
                                         <a onclick="return confirm('Apakah yakin data akan dihapus?')" href="<?= $link . 'hapus&id_detail=' . $tampil->id_detail ?>" class="bg-red-500 text-white py-1 px-2 rounded-md">
                                             <!-- Tombol Hapus dengan konfirmasi -->
-                                            <span class="glyphicon glyphicon-trash"></span>
+                                            <span class="glyphicon glyphicon-trash">hapus</span>
                                         </a>
                                     </td>
                                 </tr>

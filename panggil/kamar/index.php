@@ -61,7 +61,7 @@
         Edit
     </a>
     <!-- URL untuk mengarahkan ke halaman "hapus.php" dengan parameter id_kamar -->
-    <a href="<?= $link.'delete&id_kamar='.$tampil->id_kamar ?>" class="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded-md inline-block" onclick="return confirm('Apakah yakin data akan dihapus?')">
+    <a href="<?= $link.'hapus&id_kamar='.$tampil->id_kamar ?>" class="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded-md inline-block" onclick="return confirm('Apakah yakin data akan dihapus?')">
         Delete
     </a>
 </td>

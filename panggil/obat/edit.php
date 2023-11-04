@@ -17,42 +17,28 @@
 
 	if ($_POST) {
 		// Jika ada data POST, maka proses update data obat
-		$id_obat = $_POST['id_obat'];
-		$nama_obat = $_POST['nama_obat'];
-		$harga = $_POST['harga'];
+		$sql = "UPDATE obat SET nama_obat='" . $_POST['nama_obat'] . "', harga='" . $_POST['harga'] . "' WHERE id_obat=" . $_POST['id_obat'];
 
-		$sql = "UPDATE obat SET nama_obat=?, harga=? WHERE id_obat=?";
-		$stmt = $koneksi->prepare($sql);
-		$stmt->bind_param("sss", $nama_obat, $harga, $id_obat);
-
-		if ($stmt->execute()) {
+		if ($koneksi->query($sql) === TRUE) {
 			// Jika query berhasil dieksekusi, arahkan kembali ke halaman utama
 			echo "<script>
 				window.location.href='index.php?lihat=obat/index';
 				</script>";
 		} else {
-			echo "Gagal: " . $stmt->error;
+			echo "Gagal: " . $koneksi->error;
 		}
 
-		$stmt->close();
 		$koneksi->close();
 	} else {
 		// Jika tidak ada data POST, maka tampilkan data obat yang akan diedit
-		$id_obat = $_GET['id_obat'];
+		$query = $koneksi->query("SELECT * FROM obat WHERE id_obat=" . $_GET['id_obat']);
 
-		$query = $koneksi->prepare("SELECT * FROM obat WHERE id_obat=?");
-		$query->bind_param("s", $id_obat);
-		$query->execute();
-		$result = $query->get_result();
-
-		if ($result->num_rows > 0) {
-			$data = $result->fetch_object();
+		if ($query->num_rows > 0) {
+			$data = mysqli_fetch_object($query);
 		} else {
 			echo "Data tidak tersedia";
 			die();
 		}
-
-		$query->close();
 	}
 	?>
 

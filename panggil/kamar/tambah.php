@@ -1,68 +1,74 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
-    <!-- Menambahkan Tailwind CSS -->
+    <title>Tambah Data Kamar</title>
+    <!-- Tambahkan stylesheet Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body>
-
 <?php
-      // Memanggil file koneksi hanya satu kali. 
+    // Menghilangkan pesan error yang mungkin muncul
+    error_reporting(0);
     require_once('koneksi.php');
-
-    // Query SQL untuk mengambil data dari tabel 'kamar'.
-    $query  = "SELECT * FROM kamar";
-    $link   = "index.php?lihat=kamar/";
 ?>
-
-<div class="row">
-    <div class="col-lg-12">
-        <h3 class="text-primary">Data Kamar</h3>
-        <hr class="border-t-2 border-gray-300 my-4"/>
-
-        <!-- Tombol Tambah -->
-        <a href="<?= $link.'tambah' ?>" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md inline-block">
-            <span class="glyphicon glyphicon-plus"></span> Tambah
-        </a>
-
-        <!-- Menampilkan Tabel -->
-        <div class="overflow-x-auto mt-4">
-            <table class="table-auto w-full bg-white border border-gray-300">
-                <thead>
-                    <tr class="bg-blue-200">
-                        <th class="py-2 px-4">No</th>
-                        <th class="py-2 px-4">Id Kamar</th>
-                        <th class="py-2 px-4">Nama Kamar</th>
-                        <th class="py-2 px-4">Kelas Kamar</th>
-                        <th class="py-2 px-4">Kapasitas</th>
-                        <th class="py-2 px-4">Harga</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    if ($data = mysqli_query($koneksi, $query)) {
-                        $no = 1;
-                        while ($tampil = mysqli_fetch_object($data)) {
-                            ?>
-                            <tr>
-                                <td class="py-2 px-4"><?= $no ?></td>
-                                <td class="py-2 px-4"><?= $tampil->id_kamar?></td>
-                                <td class="py-2 px-4"><?= $tampil->nama_kamar?></td>
-                                <td class="py-2 px-4"><?= $tampil->kelas ?></td>
-                                <td class="py-2 px-4"><?= $tampil->kapasitas ?></td>
-                                <td class="py-2 px-4"><?= $tampil->harga ?></td>
-                            </tr>
-                            <?php
-                            $no++;
-                        } // Tutup while
-                    } // Tutup if
-                    ?>
-                </tbody>
-            </table>
-        </div><!-- .table-responsive -->
+<div class="container mx-auto p-4">
+    <div class="bg-white rounded-lg shadow p-4">
+        <h3 class="text-primary text-2xl font-bold">Tambah Data Kamar</h3>
+        <hr class="border-t border-gray-300">
+        <form action="" method="POST">
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2">ID Kamar</label>
+                <!-- Input untuk memasukkan ID Kamar -->
+                <input type="text" class="form-input block w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200" name="id_kamar" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2">Nama Kamar</label>
+                <!-- Input untuk memasukkan Nama Kamar -->
+                <input type="text" class="form-input block w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200" name="nama_kamar" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2">Kelas Kamar</label>
+                <!-- Input untuk memasukkan Kelas Kamar -->
+                <input type="text" class="form-input block w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200" name="kelas" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2">Kapasitas</label>
+                <!-- Input untuk memasukkan Kapasitas -->
+                <input type="number" class="form-input block w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200" name="kapasitas" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2">Harga</label>
+                <!-- Input untuk memasukkan Harga -->
+                <input type="number" class="form-input block w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200" name="harga" required>
+            </div>
+            <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded-md">
+                <span class="glyphicon glyphicon-floppy-disk"></span> Simpan
+            </button>
+        </form>
     </div>
 </div>
+<?php
+if ($_POST) {
+    try {
+        // Menuliskan query tambah
+        $sql = "INSERT INTO kamar (id_kamar, nama_kamar, kelas, kapasitas, harga) VALUES ('" . $_POST['id_kamar'] . "','" . $_POST['nama_kamar'] . "','" . $_POST['kelas'] . "','" . $_POST['kapasitas'] . "','" . $_POST['harga'] . "')";
 
+        // Cek jika query salah
+        if (!$koneksi->query($sql)) {
+            echo $koneksi->error;
+            die();
+        }
+    }
+    // Cek jika terjadi error
+    catch (Exception $error) {
+        echo $error;
+        die();
+    }
+
+    echo "<script>
+        window.location.href='index.php?lihat=kamar/index';
+      </script>";
+}
+?>
 </body>
 </html>

@@ -12,7 +12,7 @@
     require_once('koneksi.php');
 ?>
 <div class="container mx-auto p-4">
-    <div class="bg-white rounded-lg shadow p-4">
+    <div class="bg-blue rounded-lg shadow p-4">
         <h3 class="text-primary text-2xl font-bold">Tambah Data Rawat Inap</h3>
         <hr class="border-t border-gray-300">
         <form action="" method="POST">
@@ -69,7 +69,7 @@ if ($_POST) {
         $lama = ((abs(strtotime($date2) - strtotime($date1))) / (60 * 60 * 24));
 
         // Menuliskan query tambah
-        $sql = "INSERT INTO inap (id_inap, tgl_masuk, tgl_keluar, lama, id_pasien, id_kamar) VALUES ('" . $_POST['id_inap'] . "','" . $_POST['tgl_masuk'] . "','" . $_POST['tgl_keluar'] . "','" . $lama . "','" . $_POST['id_pasien'] . "','" . $_POST['id_kamar'] . ')';
+        $sql = "INSERT INTO inap (tgl_masuk, tgl_keluar, lama, id_pasien, id_kamar) VALUES ('" . $_POST['tgl_masuk'] . "','" . $_POST['tgl_keluar'] . "','" . $lama . "','" . $_POST['id_pasien'] . "','" . $_POST['id_kamar'] . "')";
 
         // Cek jika query salah
         if (!$koneksi->query($sql)) {

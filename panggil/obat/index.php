@@ -51,7 +51,7 @@
 											<span class="glyphicon glyphicon-edit">edit</span>
 										</a>
 										<a onclick="return confirm('Apakah yakin data akan dihapus?')" href="<?= $link.'hapus&id_obat='.$tampil->id_obat ?>" class="bg-red-500 text-white rounded-md py-1 px-2">
-											<span class="glyphicon glyphicon-trash">delete</span>
+											<span class="glyphicon glyphicon-trash">hapus</span>
 										</a>
 									</td>
 								</tr>

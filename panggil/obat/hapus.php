@@ -8,8 +8,10 @@
 	} 
 
 	catch (Exception $error) {
-		echo $error;
-		die();
+		echo "<script>
+                alert('Data masih digunakan dan tidak dapat dihapus');
+                window.location.href = 'index.php?lihat=inap/index';
+            </script>";
 	}
 
   	echo "<script>

@@ -1,53 +1,92 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Data Kamar</title>
-    <!-- Menambahkan Tailwind CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+	<title>Edit Data Kamar</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+	<style>
+		.required::before {
+			content: "*";
+			color: red;
+		}
+	</style>
 </head>
-<body class="bg-gray-100">
-    <?php
-        // Memasukkan file koneksi.php
-        require_once('koneksi.php');
+<body>
+	<?php
+	// Menggunakan file koneksi.php
+	require_once('koneksi.php');
 
-        // Melakukan query ke database untuk mengambil data Kamar
-        $query = $koneksi->query("SELECT * FROM kamar");
-    ?>
+	if ($_POST) {
+		// Jika ada data POST, maka proses update data kamar
+		$id_kamar = $_POST['id_kamar'];
+		$nama_kamar = $_POST['nama_kamar'];
+		$kelas = $_POST['kelas'];
+		$kapasitas = $_POST['kapasitas'];
+		$harga = $_POST['harga'];
 
-    <div class="container mx-auto px-4 py-8">
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <!-- Judul halaman -->
-            <h3 class="text-2xl font-bold text-primary mb-4">Data Kamar</h3>
-            <hr class="border-t border-gray-300">
+		$sql = "UPDATE kamar SET nama_kamar=?, kelas=?, kapasitas=?, harga=? WHERE id_kamar=?";
+		$stmt = $koneksi->prepare($sql);
+		$stmt->bind_param("ssisi", $nama_kamar, $kelas, $kapasitas, $harga, $id_kamar);
 
-            <!-- Tabel untuk menampilkan data Kamar -->
-            <table class="w-full mt-6">
-                <thead>
-                    <tr>
-                        <th class="py-2 px-4 bg-gray-200 text-gray-700 font-bold">Nama Kamar</th>
-                        <th class="py-2 px-4 bg-gray-200 text-gray-700 font-bold">Kelas</th>
-                        <th class="py-2 px-4 bg-gray-200 text-gray-700 font-bold">Kapasitas</th>
-                        <th class="py-2 px-4 bg-gray-200 text-gray-700 font-bold">Tarif</th>
-                        <th class="py-2 px-4 bg-gray-200 text-gray-700 font-bold">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php while ($data = mysqli_fetch_object($query)): ?>
-                        <tr>
-                            <td class="py-2 px-4 border-b border-gray-300"><?= $data->nama_kamar ?></td>
-                            <td class="py-2 px-4 border-b border-gray-300"><?= $data->kelas ?></td>
-                            <td class="py-2 px-4 border-b border-gray-300"><?= $data->kapasitas ?></td>
-                            <td class="py-2 px-4 border-b border-gray-300"><?= $data->harga ?></td>
-                            <td class="py-2 px-4 border-b border-gray-300">
-                                <!-- Tombol Edit dan Hapus dengan tautan ke halaman edit dan hapus -->
-                                <a href="edit_kamar.php?id_kamar=<?= $data->id_kamar ?>" class="text-blue-500 hover:text-blue-700 mr-2">Edit</a>
-                                <a href="hapus_kamar.php?id_kamar=<?= $data->id_kamar ?>" class="text-red-500 hover:text-red-700">Hapus</a>
-                            </td>
-                        </tr>
-                    <?php endwhile; ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
+		if ($stmt->execute()) {
+			// Jika query berhasil dieksekusi, arahkan kembali ke halaman utama
+			echo "<script>
+				window.location.href='index.php?lihat=kamar/index';
+				</script>";
+		} else {
+			echo "Gagal: " . $stmt->error;
+		}
+
+		$stmt->close();
+		$koneksi->close();
+	} else {
+		// Jika tidak ada data POST, maka tampilkan data kamar yang akan diedit
+		$id_kamar = $_GET['id_kamar'];
+
+		$query = $koneksi->prepare("SELECT * FROM kamar WHERE id_kamar=?");
+		$query->bind_param("i", $id_kamar);
+		$query->execute();
+		$result = $query->get_result();
+
+		if ($result->num_rows > 0) {
+			$data = $result->fetch_object();
+		} else {
+			echo "Data tidak tersedia";
+			die();
+		}
+
+		$query->close();
+	}
+	?>
+
+	<div class="container mx-auto py-8">
+		<h3 class="text-primary text-2xl font-bold">Edit Data Kamar</h3>
+		<hr class="border-t-2 border-gray-300 my-4">
+		<form action="" method="POST">
+			<input type="hidden" name="id_kamar" value="<?= $data->id_kamar ?>">
+			<div class="mb-4">
+				<label for="nama_kamar" class="text-gray-600 required">Nama Kamar</label>
+				<input type="text" value="<?= $data->nama_kamar ?>" id="nama_kamar" class="form-input mt-1 block w-full border border-gray-300 rounded-md" name="nama_kamar" required>
+			</div>
+
+			<div class="mb-4">
+				<label for="kelas" class="text-gray-600 required">Kelas</label>
+				<input type="text" value="<?= $data->kelas ?>" id="kelas" class="form-input mt-1 block w-full border border-gray-300 rounded-md" name="kelas" required>
+			</div>
+
+			<div class="mb-4">
+				<label for="kapasitas" class="text-gray-600 required">Kapasitas</label>
+				<input type="text" value="<?= $data->kapasitas ?>" id="kapasitas" class="form-input mt-1 block w-full border border-gray-300 rounded-md" name="kapasitas" required>
+			</div>
+
+			<div class="mb-4">
+				<label for="harga" class="text-gray-600 required">Harga</label>
+				<input type="text" value="<?= $data->harga ?>" id="harga" class="form-input mt-1 block w-full border border-gray-300 rounded-md" name="harga" required>
+			</div>
+
+			<button type="submit" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md">
+				Ubah
+			</button>
+		</form>
+	</div>
 </body>
 </html>

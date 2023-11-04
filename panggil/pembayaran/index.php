@@ -55,10 +55,10 @@
                                 <td><?= $tampil->total ?></td>
                                 <td class="text-center">
                                     <a href="<?= $link . 'edit&id_pembayaran=' . $tampil->id_pembayaran ?>" class="btn btn-primary btn-sm">
-                                        <span class="glyphicon glyphicon-edit"></span>
+                                        <span class="glyphicon glyphicon-edit">edit</span>
                                     </a>
                                     <a onclick="return confirm('Apakah yakin data akan di hapus?')" href="<?= $link . 'hapus&id_pembayaran=' . $tampil->id_pembayaran ?>" class="btn btn-danger btn-sm">
-                                        <span class="glyphicon glyphicon-trash"></span>
+                                        <span class="glyphicon glyphicon-trash">hapus</span>
                                     </a>
                                 </td>
                             </tr>

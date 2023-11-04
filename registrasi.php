@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body class="bg-gray-50">
@@ -24,14 +27,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fullname = $_POST['fullname'];
     $uemail = $_POST['uemail'];
 
+    // Query untuk memeriksa apakah username sudah digunakan sebelumnya
+    $checkQuery = "SELECT * FROM users WHERE uname = '$uname'";
+    $result = $koneksi->query($checkQuery);
+
+    if ($result->num_rows > 0) {
+        echo "<script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Username sudah digunakan. Silakan gunakan username lain.'
+                }).then(() => {
+                    window.location.href = 'registrasi.php';
+                });
+              </script>";
+        die();
+    }
+
     // Query untuk memeriksa apakah email sudah digunakan sebelumnya
     $checkQuery = "SELECT * FROM users WHERE uemail = '$uemail'";
     $result = $koneksi->query($checkQuery);
 
     if ($result->num_rows > 0) {
         echo "<script>
-                alert('Email sudah digunakan. Silakan gunakan email lain.');
-                window.location.href = 'registrasi.php';
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Email sudah digunakan. Silakan gunakan email lain.'
+                }).then(() => {
+                    window.location.href = 'registrasi.php';
+                });
               </script>";
         die();
     }
@@ -41,8 +66,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($koneksi->query($sql) === TRUE) {
         echo "<script>
-                alert('Registrasi berhasil!');
-                window.location.href = 'login.php';
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Registrasi berhasil!',
+                    text: 'Anda akan dialihkan ke halaman login.'
+                }).then(() => {
+                    window.location.href = 'login.php';
+                });
               </script>";
         die();
     } else {
@@ -50,7 +80,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-
     <div class="min-h-screen flex items-center justify-center">
         <div class="max-w-md w-full bg-white p-8 rounded shadow">
             <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-6">
