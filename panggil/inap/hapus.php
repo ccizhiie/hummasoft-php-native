@@ -1,20 +1,24 @@
 <?php
-// Memanggil file koneksi database
 require_once('koneksi.php');
 
 try {
     $id_inap = $_GET['id_inap'];
 
     // Pengecekan apakah data masih digunakan sebelum dihapus
-    $checkQuery = "SELECT * FROM penggunaan_obat WHERE id_inap = $id_inap";
+    $checkQuery = "SELECT * FROM obat WHERE id_inap = $id_inap";
     $result = $koneksi->query($checkQuery);
 
     if ($result->num_rows > 0) {
-        // Menampilkan alert jika data masih digunakan
+        // Menampilkan SweetAlert jika data masih digunakan
         echo "<script>
-                alert('Data masih digunakan dan tidak dapat dihapus');
+            Swal.fire({
+                icon: 'error',
+                title: 'Data masih digunakan',
+                text: 'Data ini masih digunakan dan tidak dapat dihapus.',
+            }).then((result) => {
                 window.location.href = 'index.php?lihat=inap/index';
-            </script>";
+            });
+        </script>";
         die();
     }
 
@@ -24,17 +28,27 @@ try {
     // Mengeksekusi query penghapusan data
     $koneksi->query($deleteQuery);
 
-    // Mengarahkan pengguna ke halaman lain setelah berhasil menghapus data
+    // Menggunakan SweetAlert untuk memberikan konfirmasi bahwa data berhasil dihapus
     echo "<script>
-            alert('Data berhasil dihapus');
+        Swal.fire({
+            icon: 'success',
+            title: 'Data berhasil dihapus',
+            text: 'Data Rawat Inap berhasil dihapus.'
+        }).then((result) => {
             window.location.href = 'index.php?lihat=inap/index';
-        </script>";
+        });
+    </script>";
 } catch (Exception $error) {
     // Menangani kesalahan jika terjadi error
     echo "<script>
-            alert('Terjadi kesalahan saat menghapus data');
+        Swal.fire({
+            icon: 'error',
+            title: 'Terjadi kesalahan',
+            text: 'Terjadi kesalahan saat menghapus data: {$error->getMessage()}'
+        }).then((result) => {
             window.location.href = 'index.php?lihat=inap/index';
-        </script>";
+        });
+    </script>";
     die();
 }
 ?>

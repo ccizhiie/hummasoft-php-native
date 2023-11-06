@@ -2,9 +2,8 @@
 <html>
 <head>
     <title>Tambah Data Rawat Inap</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Tambahkan stylesheet Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body>
 <?php
@@ -16,7 +15,7 @@
     <div class="bg-blue rounded-lg shadow p-4">
         <h3 class="text-primary text-2xl font-bold">Tambah Data Rawat Inap</h3>
         <hr class="border-t border-gray-300">
-        <form action="" method="POST" onsubmit="return validateForm()">
+        <form action="" method="POST">
             <div class="mb-4">
                 <label class="block text-gray-700 font-bold mb-2">Nama Pasien</label>
                 <!-- Dropdown untuk memilih Nama Pasien -->
@@ -34,7 +33,7 @@
             <div class="mb-4">
                 <label class="block text-gray-700 font-bold mb-2">Tanggal Masuk</label>
                 <!-- Input untuk memasukkan Tanggal Masuk -->
-                <input type="date" class="form-input block w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200" name="tgl_masuk" id="tgl_masuk" required>
+                <input type="date" class="form-input block w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200" name="tgl_masuk" required>
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 font-bold mb-2">Tanggal Keluar</label>
@@ -62,30 +61,32 @@
     </div>
 </div>
 
-<script>
-function validateForm() {
-    var tglMasuk = document.getElementById('tgl_masuk').value;
-    if (tglMasuk === '') {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Tanggal masuk harus diisi!'
-        });
-        return false; // Prevent form submission
-    }
-    return true; // Allow form submission
-}
-</script>
-
 <?php
 if ($_POST) {
     try {
-        // ...
-        // Sisanya dari kode PHP Anda
-    } catch (Exception $error) {
+        $date1 = $_POST['tgl_masuk'];
+        $date2 = $_POST['tgl_keluar'];
+        $lama = ((abs(strtotime($date2) - strtotime($date1))) / (60 * 60 * 24));
+
+        // Menuliskan query tambah
+        $sql = "INSERT INTO inap (tgl_masuk, tgl_keluar, lama, id_pasien, id_kamar) VALUES ('" . $_POST['tgl_masuk'] . "','" . $_POST['tgl_keluar'] . "','" . $lama . "','" . $_POST['id_pasien'] . "','" . $_POST['id_kamar'] . "')";
+
+        // Cek jika query salah
+        if (!$koneksi->query($sql)) {
+            echo $koneksi->error;
+            die();
+        }
+    }
+
+    // Cek jika terjadi error
+    catch (Exception $error) {
         echo $error;
         die();
     }
+
+    echo "<script>
+			window.location.href='index.php?lihat=inap/index';
+		  </script>";
 }
 ?>
 </body>
