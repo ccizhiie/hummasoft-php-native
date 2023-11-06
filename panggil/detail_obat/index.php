@@ -50,7 +50,7 @@
                                     <td class="py-2 px-4"><?= $no ?></td>
                                     <td class="py-2 px-4"><?= $tampil->id_inap ?></td>
                                     <td class="py-2 px-4"><?= $tampil->nama_obat ?></td>
-                                    <td class="py-2 px-4"><?= $tampil->harga ?></td>
+                                    <td class="py-2 px-4">Rp <?= number_format($tampil->harga, 0, ',', '.') ?></td>
                                     <td class="py-2 px-4 text-center">
                                         <a href="<?= $link . 'edit&id_detail=' . $tampil->id_detail ?>" class="bg-blue-500 text-white py-1 px-2 rounded-md">
                                             <!-- Tombol Edit -->
