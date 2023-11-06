@@ -1,20 +1,34 @@
 <?php
-	require_once('koneksi.php');
-	
-	try {
-		$sql = "DELETE FROM obat WHERE id_obat=".$_GET['id_obat'];
-		
-		$koneksi->query($sql);
-	} 
+require_once('koneksi.php');
 
-	catch (Exception $error) {
-		echo "<script>
-                alert('Data masih digunakan dan tidak dapat dihapus');
-                window.location.href = 'index.php?lihat=inap/index';
-            </script>";
-	}
+try {
+	$sql = "DELETE FROM obat WHERE id_obat=".$_GET['id_obat'];
 
-  	echo "<script>
-			window.location.href='index.php?lihat=obat/index';
-	</script>";
+    $koneksi->query($sql);
+
+    echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+    echo "<script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Sukses',
+            text: 'Data berhasil dihapus',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = 'index.php?lihat=obat/index';
+            }
+        });
+    </script>";
+} catch (Exception $error) {
+    echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+    echo "<script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: 'Data masih digunakan!',
+        }).then(() => {
+			window.location.href = 'index.php?lihat=obat/index';
+        });
+    </script>";
+    die();
+}
 ?>

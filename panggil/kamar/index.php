@@ -38,6 +38,7 @@
                         <th class="py-2 px-4">Kelas Kamar</th>
                         <th class="py-2 px-4">Kapasitas</th>
                         <th class="py-2 px-4">Harga</th>
+                        
                         <th class="py-2 px-4" style="text-align: center;">Aksi</th>
                     </tr>
                 </thead>

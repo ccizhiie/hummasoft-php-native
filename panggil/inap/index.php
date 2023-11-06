@@ -2,6 +2,7 @@
 <html>
 
 <head>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -17,7 +18,7 @@
 
   <div class="container mx-auto py-8">
     <h3 class="text-2xl text-blue-500 font-bold">Data Rawat Inap</h3>
-    <hr class="border-t-2 border-gray-500 my-4" />
+    <hr class="border-t-2 border-gray-500 my-4">
 
     <!-- Tombol Tambah -->
     <a href="<?= $link . 'tambah' ?>" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">

@@ -36,16 +36,20 @@
 					</thead>
 					<tbody>
 						<?php
-						if($data = mysqli_query($koneksi, $query)){
+						if ($data = mysqli_query($koneksi, $query)) {
 							$no = 1;
-							while($tampil = mysqli_fetch_object($data)){
-							?>
+							while ($tampil = mysqli_fetch_object($data)) {
+								// Membersihkan karakter yang tidak diinginkan
+								$harga_clean = preg_replace('/[^0-9.,]/', '', $tampil->harga);
+								?>
 
 								<tr>
 									<td class="border-b border-gray-300 px-4 py-2"><?= $no ?></td>
 									<td class="border-b border-gray-300 px-4 py-2"><?= $tampil->id_obat ?></td>
 									<td class="border-b border-gray-300 px-4 py-2"><?= $tampil->nama_obat ?></td>
-									<td class="border-b border-gray-300 px-4 py-2"><?= $tampil->harga ?></td>
+									<td class="border-b border-gray-300 px-4 py-2">
+										<?= 'Rp ' . number_format($harga_clean, 0, ',', '.') ?>
+									</td>
 									<td class="border-b border-gray-300 px-4 py-2">
 										<a href="<?= $link.'edit&id_obat='.$tampil->id_obat ?>" class="bg-blue-500 text-white rounded-md py-1 px-2 mr-2">
 											<span class="glyphicon glyphicon-edit">edit</span>
@@ -56,7 +60,7 @@
 									</td>
 								</tr>
 
-							<?php
+								<?php
 								$no++;
 							}//Tutup while
 						}//Tutup if

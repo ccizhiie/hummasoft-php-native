@@ -1,39 +1,93 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Opon Hospital</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
-<body class="bg-gray-100">
-    <h1 class="text-4xl text-center mt-8">Rumah Sakit Oponn</h1>
+<body class="bg-gray-50">
+    <?php
+    $koneksi = new mysqli('localhost', 'root', '', 'rumah_sakit');
 
-    <div class="flex justify-center items-center h-screen">
-        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-1/3">
-            <p class="text-2xl text-center mb-8">Login User</p>
+    // Periksa koneksi
+    if ($koneksi->connect_error) {
+        die("Koneksi ke database gagal: " . $koneksi->connect_error);
+    }
 
-            <form method="post" action="action.php">
-                <div class="mb-4">
-                    <label class="block">Username</label>
-                    <input type="text" name="username" class="border border-gray-300 px-4 py-2 rounded-lg w-full" placeholder="Username atau email ..">
+    // Ambil data dari form jika ada
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $uname = $_POST['uname'];
+        $upass = $_POST['upass'];
+
+        // Query untuk memeriksa kecocokan username dan password
+        $sql = "SELECT * FROM users WHERE uname = '$uname' AND upass = '$upass'";
+        $result = $koneksi->query($sql);
+
+        if ($result->num_rows > 0) {
+            // Login berhasil
+            echo "
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Login Berhasil',
+                    text: 'Anda telah berhasil login!',
+                    showConfirmButton: false,
+                    timer: 2000
+                }).then(function() {
+                    window.location.href = 'index.php';
+                });
+            </script>";
+            die();
+        } else {
+            // Login gagal
+            echo "
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Login Gagal',
+                    text: 'Username atau password salah',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            </script>";
+        }
+    }
+    ?>
+
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="max-w-md w-full bg-white p-8 rounded shadow">
+            <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-6">
+                Login
+            </h2>
+            <form class="space-y-4" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+                <div>
+                    <label for="uname" class="sr-only">Username</label>
+                    <input id="uname" name="uname" type="text" autocomplete="uname" required
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="Username">
                 </div>
-
-                <div class="mb-4">
-                    <label class="block">Password</label>
-                    <input type="password" name="password" class="border border-gray-300 px-4 py-2 rounded-lg w-full" placeholder="Password ..">
+                <div>
+                    <label for="upass" class="sr-only">Password</label>
+                    <input id="upass" name="upass" type="password" autocomplete="current-password" required
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="Password">
                 </div>
-
-                <input type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full cursor-pointer w-full" value="LOGIN">
+                <div>
+                    <button type="submit"
+                        class="w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Login
+                    </button>
+                </div>
             </form>
-
             <div class="text-center mt-4">
-                <p>Tidak punya akun?</p>
-                <a href="registrasi.php" class="text-blue-500 hover:text-blue-700">Register</a>
+                <a href="registrasi.php" class="text-blue-600 underline">Register</a>
             </div>
         </div>
     </div>
-
 </body>
 
 </html>
