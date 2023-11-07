@@ -1,23 +1,8 @@
 <?php
 session_start();
 session_destroy();
+echo "<script>
+        alert('Logout berhasil!');
+        window.location.href='login.php';
+    </script>";
 ?>
-
-<!DOCTYPE html>
-<html>
-<head>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-<body>
-  <script>
-    Swal.fire({
-      icon: 'success',
-      title: 'Logout berhasil!',
-      showConfirmButton: false,
-      timer: 1500
-    }).then(function() {
-      window.location.href = 'login.php';
-    });
-  </script>
-</body>
-</html>

@@ -42,17 +42,24 @@
                     if ($data = mysqli_query($koneksi, $query)) {
                         $no = 1;
                         while ($tampil = mysqli_fetch_object($data)) {
+                            // Format harga
+                            $hargaKamar = number_format($tampil->bayarkamar, 0, ',', '.');
+                            $totalObat = number_format($tampil->totalObat, 0, ',', '.');
+                            $totalBayar = number_format($tampil->total, 0, ',', '.');
+
+                            // Format tanggal
+                            $tanggalPembayaran = date('d F Y', strtotime($tampil->tanggal));
                     ?>
 
                             <tr>
                                 <td><?= $no ?></td>
                                 <td><?= $tampil->id_pembayaran ?></td>
-                                <td><?= $tampil->tanggal ?></td>
+                                <td><?= $tanggalPembayaran ?></td>
                                 <td><?= $tampil->id_inap ?></td>
                                 <td><?= $tampil->nama_pasien ?></td>
-                                <td><?= $tampil->bayarkamar ?></td>
-                                <td><?= $tampil->totalObat ?></td>
-                                <td><?= $tampil->total ?></td>
+                                <td>Rp <?= $hargaKamar ?></td>
+                                <td>Rp <?= $totalObat ?></td>
+                                <td>Rp <?= $totalBayar ?></td>
                                 <td class="text-center">
                                     <a href="<?= $link . 'edit&id_pembayaran=' . $tampil->id_pembayaran ?>" class="btn btn-primary btn-sm">
                                         <span class="glyphicon glyphicon-edit">edit</span>

@@ -54,7 +54,7 @@
                                 <td class="py-2 px-4"><?= $tampil->nama_kamar?></td>
                                 <td class="py-2 px-4"><?= $tampil->kelas ?></td>
                                 <td class="py-2 px-4"><?= $tampil->kapasitas ?></td>
-                                <td class="py-2 px-4"><?= $tampil->harga ?></td>
+                                <td class="py-2 px-4">Rp <?= number_format($tampil->harga, 0, ',', '.') ?></td>
                                 <td class="py-2 px-4 flex justify-center">
                                 <td class="py-2 px-4 flex justify-center">
     <!-- URL untuk mengarahkan ke halaman "edit.php" dengan parameter id_kamar -->

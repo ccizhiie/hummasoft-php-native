@@ -38,6 +38,7 @@
 						<?php
 						if ($data = mysqli_query($koneksi, $query)) {
 							$no = 1;
+							//mengambil data dan dikoneksikan 
 							while ($tampil = mysqli_fetch_object($data)) {
 								// Membersihkan karakter yang tidak diinginkan
 								$harga_clean = preg_replace('/[^0-9.,]/', '', $tampil->harga);
