@@ -56,9 +56,9 @@
                     $result = mysqli_query($con, "SELECT * FROM pembayaran");
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<tr>";
-                        echo "<td class='border'>" . $row['tanggal'] . "</td>";
+                        echo "<td class='border'>" . date('F d, Y', strtotime($row['tanggal'])) . "</td>";
                         echo "<td class='border'>" . $row['id_inap'] . "</td>";
-                        echo "<td class='border'>" . $row['total'] . "</td>";
+                        echo "<td class='border'>Rp " . number_format($row['total'], 0, ',', '.') . "</td>";
                         echo "</tr>";
                     }
                     ?>
@@ -75,7 +75,7 @@
         try {
             //Menuliskan query tambah
             $sql = "INSERT INTO pembayaran (tanggal, id_inap, total) VALUES ('" . $_POST['tanggal'] . "','" . $_POST['id_inap'] . "','" . $_POST['total'] . "')";
-            
+
             //Cek jika query salah
             if (!$koneksi->query($sql)) {
                 echo $koneksi->error;
@@ -96,4 +96,4 @@
 
 </body>
 
-</html> 
+</html>

@@ -7,12 +7,10 @@
 
 <body>
   <?php
-  /* Skrip ini tidak menggunakan OOP */
-  /* Memanggil file koneksi hanya satu kali */
   require_once('koneksi.php');
 
   // Query untuk mengambil data Rawat Inap dengan menggabungkan tabel inap, pasien, dan kamar menggunakan INNER JOIN
-  $query  = "SELECT inap.id_inap, pasien.nama_pasien, inap.tgl_masuk, inap.tgl_keluar, inap.lama, kamar.id_kamar FROM ((inap INNER JOIN pasien ON inap.id_pasien = pasien.id_pasien) INNER JOIN kamar ON inap.id_kamar = kamar.id_kamar)";
+  $query  = "SELECT inap.id_inap, pasien.nama_pasien, DATE_FORMAT(inap.tgl_masuk, '%d %M %Y') AS tgl_masuk, DATE_FORMAT(inap.tgl_keluar, '%d %M %Y') AS tgl_keluar, inap.lama, kamar.id_kamar FROM ((inap INNER JOIN pasien ON inap.id_pasien = pasien.id_pasien) INNER JOIN kamar ON inap.id_kamar = kamar.id_kamar)";
   $link   = "index.php?lihat=inap/";
   ?>
 

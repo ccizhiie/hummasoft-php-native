@@ -47,6 +47,19 @@
     require_once('koneksi.php');
 
     if($_POST){
+        $nama_pasien = $_POST['nama_pasien'];
+
+// Memeriksa apakah input nama mengandung angka
+if (preg_match('/\d/', $nama_pasien)) {
+    echo '<script>
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Inputkan Huruf!"
+        });
+    </script>';
+    die(); // Menghentikan eksekusi script
+}
         // Mengecek setiap input untuk validasi
         $nama_pasien = $_POST['nama_pasien'];
         $jk = $_POST['jk'];

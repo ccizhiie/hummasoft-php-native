@@ -4,6 +4,8 @@
     <title>Tambah Data Rawat Inap</title>
     <!-- Tambahkan stylesheet Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Tambahkan library SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 <body>
 <?php
@@ -33,7 +35,7 @@
             <div class="mb-4">
                 <label class="block text-gray-700 font-bold mb-2">Tanggal Masuk</label>
                 <!-- Input untuk memasukkan Tanggal Masuk -->
-                <input type="date" class="form-input block w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200" name="tgl_masuk" required>
+                <input type="date" class="form-input block w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200" name="tgl_masuk">
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 font-bold mb-2">Tanggal Keluar</label>
@@ -55,7 +57,7 @@
                 </select>
             </div>
             <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded-md">
-                <span class="glyphicon glyphicon-floppy-disk"></span> Simpan
+                <spanclass="glyphicon glyphicon-floppy-disk"></span> Simpan
             </button>
         </form>
     </div>
@@ -63,6 +65,18 @@
 
 <?php
 if ($_POST) {
+    // Memeriksa apakah ada data yang kosong
+    if (empty($_POST['tgl_masuk']) || empty($_POST['tgl_keluar']) || empty($_POST['id_pasien']) || empty($_POST['id_kamar'])) {
+        echo '<script>
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Harap isi semua data yang diperlukan!"
+            });
+        </script>';
+        die(); // Menghentikan eksekusi script
+    }
+
     try {
         $date1 = $_POST['tgl_masuk'];
         $date2 = $_POST['tgl_keluar'];
@@ -76,6 +90,16 @@ if ($_POST) {
             echo $koneksi->error;
             die();
         }
+        
+        echo '<script>
+            Swal.fire({
+                icon: "success",
+                title: "Sukses!",
+                text: "Data berhasil ditambahkan."
+            }).then(function() {
+                window.location.href = "index.php?lihat=inap/index";
+            });
+        </script>';
     }
 
     // Cek jika terjadi error
@@ -83,10 +107,6 @@ if ($_POST) {
         echo $error;
         die();
     }
-
-    echo "<script>
-			window.location.href='index.php?lihat=inap/index';
-		  </script>";
 }
 ?>
 </body>
