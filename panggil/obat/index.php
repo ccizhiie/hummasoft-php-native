@@ -5,10 +5,10 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
 </head>
 <body>
-	<?php
-	require_once('koneksi.php');
+	<?php	
+require_once('koneksi.php');
 
-	$query 	= "SELECT * FROM obat";
+$query 	= "SELECT * FROM obat";
 	$link 	= "index.php?lihat=obat/";
 	?>
 

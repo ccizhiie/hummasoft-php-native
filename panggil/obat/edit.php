@@ -3,8 +3,8 @@
 <head>
 	<title>Edit Data Obat</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<style>
 		.required::before {
 			content: "*";
@@ -16,12 +16,31 @@
 	<?php
 	// Menggunakan file koneksi.php
 	require_once('koneksi.php');
-
 	$data = null;
 
 	if ($_POST) {
 		// Jika ada data POST, maka proses update data obat
-		$sql = "UPDATE obat SET nama_obat='" . $_POST['nama_obat'] . "', harga='" . $_POST['harga'] . "' WHERE id_obat=" . $_POST['id_obat'];
+		$id_obat = $_POST['id_obat'];
+		$nama_obat = $_POST['nama_obat'];
+		$harga = $_POST['harga'];
+
+		// Validasi harga agar hanya menerima angka
+		if (!is_numeric($harga)) {
+			echo "<script>
+				Swal.fire({
+					title: 'Data tidak valid',
+					text: 'Harga harus berupa angka',
+					icon: 'error',
+					confirmButtonColor: '#10B981',
+					confirmButtonText: 'OK'
+				}).then(() => {
+					window.location.href = 'index.php?lihat=pasien/index';
+				});
+			</script>";
+			die();
+		}
+
+		$sql = "UPDATE obat SET nama_obat='$nama_obat', harga='$harga' WHERE id_obat=$id_obat";
 
 		if ($koneksi->query($sql) === TRUE) {
 			// Jika query berhasil dieksekusi, tampilkan SweetAlert
@@ -67,14 +86,25 @@
 			</div>
 
 			<div class="mb-4">
-				<label for="harga" class="text-gray-600 required">Harga</label>
+				<label for "harga" class="text-gray-600 required">Harga</label>
 				<input type="text" value="<?= isset($data['harga']) ? $data['harga'] : '' ?>" id="harga" class="form-input mt-1 block w-full border border-gray-300 rounded-md" name="harga" required>
 			</div>
 
-			<button type="submit" class="bg-green-500 hover-bg-green-600 text-white py-2 px-4 rounded-md">
-				Ubah
-			</button>
+			<button type="submit" class="bg-green-500 hover-bg-green-600 text-white py-2 px-4 rounded-md">Simpan</button>
 		</form>
 	</div>
+
+	<script>
+		$(document).ready(function() {
+			$('form').submit(function(e) {
+				e.preventDefault();
+
+				// Lakukan validasi formulir di sini (jika diperlukan)
+
+				// Jika tidak ada masalah validasi, submit formulir
+				this.submit();
+			});
+		});
+	</script>
 </body>
 </html>

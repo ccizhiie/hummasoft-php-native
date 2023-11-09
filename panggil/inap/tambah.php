@@ -17,7 +17,7 @@
     <div class="bg-blue rounded-lg shadow p-4">
         <h3 class="text-primary text-2xl font-bold">Tambah Data Rawat Inap</h3>
         <hr class="border-t border-gray-300">
-        <form action="" method="POST">
+        <form action="" method="POST" id="formRawatInap">
             <div class="mb-4">
                 <label class="block text-gray-700 font-bold mb-2">Nama Pasien</label>
                 <!-- Dropdown untuk memilih Nama Pasien -->
@@ -57,11 +57,34 @@
                 </select>
             </div>
             <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded-md">
-                <spanclass="glyphicon glyphicon-floppy-disk"></span> Simpan
+                <span class="glyphicon glyphicon-floppy-disk"></span> Simpan
             </button>
         </form>
     </div>
 </div>
+
+<script>
+    // Memeriksa tanggal keluar lebih awal daripada tanggal masuk sebelum mengirimkan formulir
+    document.getElementById('formRawatInap').addEventListener('submit', function (event) {
+        event.preventDefault(); // Mencegah pengiriman formulir
+
+        // Mengambil nilai tanggal masuk dan tanggal keluar
+        var tglMasuk = new Date(document.getElementsByName('tgl_masuk')[0].value);
+        var tglKeluar = new Date(document.getElementsByName('tgl_keluar')[0].value);
+
+        // Memeriksa jika tanggal keluar lebih awal daripada tanggal masuk
+        if (tglKeluar < tglMasuk) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Tanggal keluar tidak bisa lebih awal daripada tanggal masuk!"
+            });
+        } else {
+            // Jika tanggal keluar valid, kirim formulir
+            event.target.submit();
+        }
+    });
+</script>
 
 <?php
 if ($_POST) {
@@ -90,7 +113,7 @@ if ($_POST) {
             echo $koneksi->error;
             die();
         }
-        
+
         echo '<script>
             Swal.fire({
                 icon: "success",
